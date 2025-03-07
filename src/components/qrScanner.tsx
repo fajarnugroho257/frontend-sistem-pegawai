@@ -16,6 +16,7 @@ const QRScanner = () => {
 
         scanner.render(
             (decodedText) => {
+                console.log(decodedText);
                 setScanResult(decodedText);
                 scanner.clear();
             },
