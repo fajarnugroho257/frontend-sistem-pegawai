@@ -23,9 +23,9 @@ export default function Sidebar() {
   const location = useLocation();
   // console.log(location.pathname);
   const dataMenu = [
-    {link: "/pegawai", name:"Dashboard"}, 
-    {link: "/pegawai/barcode", name:"Barcode"},
-    {link: "/pegawai/absen", name:"Absen"},
+    {link: "/pegawai", name:"Dashboard", logo: "fa fa-bank"}, 
+    {link: "/pegawai/barcode", name:"Barcode", logo: "fa fa-barcode"},
+    {link: "/pegawai/absen", name:"Absen", logo: "fa fa-camera"},
   ];
   return (
     <>
@@ -45,8 +45,8 @@ export default function Sidebar() {
           <ul>
             {dataMenu.map((data) => (
             <li onClick={() => navigate(data.link)} key={data.name} className={`cursor-pointer hover:bg-gray-700 hover:text-white rounded-md m-3 ${location.pathname === data.link ? "bg-gray-700 text-white" : "text-black"}`}>
-              <div className="flex gap-2 p-3">
-                <PeopleIcon className="" />
+              <div className="flex items-center gap-2 p-3">
+                <i className={data.logo}></i>
                 <ListItemText primary={data.name} className={`${sideBar ? "hidden md:block" : "hidden"}`} />
               </div>
             </li>

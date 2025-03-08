@@ -1,5 +1,7 @@
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useContext } from "react";
 import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
+import { AuthContext } from "../../context/AuthContext";
+import Swal from "sweetalert2";
 
 export default function UserDropdown() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -13,6 +15,27 @@ export default function UserDropdown() {
     setAnchorEl(null);
   };
 
+  const auth = useContext(AuthContext);
+  // {auth?.logout}
+  // handle logout
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Anda akan keluar dari sistem!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, logout!",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Hapus token atau sesi login
+        auth?.logout();
+      }
+    });
+  };
+
   return (
     <div className="flex justify-end bg-blue-500">
       <IconButton onClick={handleClick} size="small">
@@ -21,7 +44,7 @@ export default function UserDropdown() {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
         <MenuItem onClick={() => console.log("Profile Clicked")}>Profile</MenuItem>
         <MenuItem onClick={() => console.log("Settings Clicked")}>Settings</MenuItem>
-        <MenuItem onClick={() => console.log("Logout Clicked")}>Logout</MenuItem>
+        <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
       </Menu>
     </div>
   );

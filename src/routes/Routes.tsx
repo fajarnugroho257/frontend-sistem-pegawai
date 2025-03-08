@@ -16,7 +16,7 @@ const AppRoutes = () => {
       <Routes>
         {/* Group untuk halaman yang butuh autentikasi */}
         {/* PrivateRoute */}
-        <Route element={<PublicRoute />}>
+        <Route element={<PrivateRoute />}>
           <Route path="/pegawai" element={<PegawaiLayout />}>
             <Route index element={<Pegawai />} />
             <Route path="barcode" element={<Barcode />} />

@@ -1,0 +1,88 @@
+import { useEffect, useState } from "react";
+import { Html5Qrcode } from "html5-qrcode";
+import { postAbsen } from "../api/auth";
+
+const QRScanner = () => {
+  const [scanResult, setScanResult] = (useState < string) | (null > null);
+  const [error, setError] = (useState < string) | (null > null);
+  let scanner: Html5Qrcode | null = null;
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const startScanner = async () => {
+      try {
+        const devices = await Html5Qrcode.getCameras();
+        if (!isMounted) return;
+
+        if (devices.length === 0) {
+          setError("Tidak ada kamera yang tersedia.");
+          return;
+        }
+
+        const backCamera = devices.find((device) =>
+          device.label.toLowerCase().includes("back")
+        );
+        const cameraId = backCamera ? backCamera.id : devices[0].id;
+
+        scanner = new Html5Qrcode("reader");
+        await scanner.start(
+          cameraId,
+          { fps: 10, qrbox: { width: 250, height: 250 }, disableFlip: true },
+          (decodedText) => {
+            if (!isMounted) return;
+            setScanResult(decodedText);
+            postData(decodedText);
+            stopScanner();
+          },
+          (error) => console.warn("Scan error:", error)
+        );
+
+        setError(null); // Jika kamera berhasil, reset error
+      } catch (err) {
+        console.error("Error accessing camera:", err);
+        if (isMounted)
+          setError(
+            "Gagal mengakses kamera. Periksa izin kamera atau coba lagi."
+          );
+      }
+    };
+
+    const stopScanner = async () => {
+      if (scanner) {
+        try {
+          await scanner.stop();
+        } catch (err) {
+          console.warn("Error stopping scanner:", err);
+        }
+        scanner = null;
+      }
+    };
+
+    startScanner();
+
+    return () => {
+      isMounted = false;
+      stopScanner();
+    };
+  }, []);
+
+  const postData = async (data: string) => {
+    try {
+      await postAbsen([{ dataImage: data }]);
+    } catch (err) {
+      console.error("Error sending data:", err);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Scan QR Code</h2>
+      <div id="reader"></div>
+      {scanResult && <p>Hasil: {scanResult}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </div>
+  );
+};
+
+export default QRScanner;
