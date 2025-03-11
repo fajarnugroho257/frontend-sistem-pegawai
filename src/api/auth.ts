@@ -7,8 +7,8 @@ export const login = async (username: string, password: string) => {
     return response.data;
 }
 
-export const register = async (email: string, password: string) => {
-    const response = await axios.post(`${API_URL}/register`, { email, password });
+export const register = async (nama: string, username: string, password: string) => {
+    const response = await axios.post(`${API_URL}/auth`, { nama, username, password });
     return response.data;
 };
 
@@ -29,6 +29,18 @@ export const postAbsen = async (data:object) => {
     const token = localStorage.getItem("token");
     const response = await axios.post(`${API_URL}/absen`,
         data, {
+        headers: {
+            "Authorization": `Bearer ${token}`, // Kirim token
+            "Content-Type": "application/json"
+        }
+    });
+    return response.data;
+};
+
+export const getDataGeneratejadwal = async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${API_URL}/generate-jadwal`,
+        {
         headers: {
             "Authorization": `Bearer ${token}`, // Kirim token
             "Content-Type": "application/json"

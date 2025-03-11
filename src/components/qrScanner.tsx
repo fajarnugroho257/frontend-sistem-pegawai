@@ -88,12 +88,20 @@ const QRScanner = () => {
     const postData = async (data: string) => {
         try {
             const response = await postAbsen({ dataImage: data });
-            console.log(response.success);
             if (response.success) {
                 Swal.fire({
                     title: "Success!",
-                    text: "Berhasil melakukan absen",
+                    text: response.message,
                     icon: "success",
+                    confirmButtonText: "OK",
+                    width: "400px",
+                    heightAuto:true
+                });
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: response.message,
+                    icon: "error",
                     confirmButtonText: "OK",
                     width: "400px",
                     heightAuto:true
@@ -103,7 +111,6 @@ const QRScanner = () => {
             console.error("Error sending data:", err);
         }
     };
-
     return (
         <div>
             <h2>Scan QR Code</h2>

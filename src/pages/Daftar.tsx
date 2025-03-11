@@ -1,8 +1,6 @@
 import { useState, useContext } from "react";
-import { login } from "../api/auth";
-import { AuthContext } from "../context/AuthContext";
+import { register } from "../api/auth";
 import { useNavigate } from "react-router-dom";
-import Input from "../components/Input";
 import Swal from "sweetalert2";
 import logo from "../assets/img/logo512.png"
 import { Link } from "react-router-dom";
@@ -10,16 +8,28 @@ import { Link } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 
 
-const Login = () => {
+const Daftar = () => {
+  const [nama, setNama] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorNama, setErrorNama] = useState(false);
   const [errorUsername, setErrorUsername] = useState(false);
+  const [errorMessage, setErrorMessage] = useState([]);
   const [errorpassword, setErrorpassword] = useState(false);
-  const auth = useContext(AuthContext);
+  interface error_data {
+    path: string,
+    msg: string,
+  }
+  const [errorValidation, setErrorValidation] = useState<error_data[]>([]);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
+      if (nama.length === 0) {
+        setErrorNama(true);
+      } else {
+        setErrorNama(false);
+      }
       if (username.length === 0) {
         setErrorUsername(true);
       } else {
@@ -30,7 +40,7 @@ const Login = () => {
       } else {
         setErrorpassword(false);
       }
-      const response = await login(username, password);
+      const response = await register(nama, username, password);
       if (!response.success) {
         Swal.fire({
           title: "Error!",
@@ -40,10 +50,15 @@ const Login = () => {
           width: "400px",
           heightAuto:true
         });
+        // setErrorValidation(response.errors);
+        // setErrorValidation();
+        // const er_data = response.errors;
+        // er_data.map((val : {msg: string, path:string, }) => {
+        //   console.log(val.msg);
+        //   // const err = [pesan => val.msg];
+        //   // setErrorValidation(err);
+        // })
       }
-      const token = response.token;
-      auth?.login(token);
-      navigate("/pegawai");
     } catch (error) {
       if (error instanceof Error) {
         Swal.fire({
@@ -54,9 +69,9 @@ const Login = () => {
           width: "400px",
           heightAuto:true
         });
-        console.error("Login failed", error.message);
+        console.error("Register failed", error.message);
       } else {
-        console.error("Login failed", error);
+        console.error("Register failed", error);
       }
     }
   };
@@ -69,7 +84,19 @@ const Login = () => {
             <div className="">
               <img className="mx-auto mb-3" src={logo} alt="Logo" width={100} />
             </div>
-            <div className="mt-2">
+            <div className="mt-4">
+              <TextField
+                error={errorNama}
+                id="outlined-textarea"
+                label="Nama"
+                placeholder="Nama"
+                multiline
+                size="small"
+                className="bg-white w-full"
+                onChange={(e) => setNama(e.target.value)}
+              />
+            </div>
+            <div className="mt-4">
               <TextField
                 error={errorUsername}
                 id="outlined-textarea"
@@ -94,8 +121,8 @@ const Login = () => {
               />
             </div>
             <div className="mt-8 flex justify-between items-center">
-              <button className="bg-blue-400 text-white rounded-md py-2 px-3 " onClick={handleLogin}>Masuk</button>
-              <Link to="/daftar" className="underline">Belum punya akun ?</Link>
+              <button className="bg-blue-400 text-white rounded-md py-2 px-3 " onClick={handleRegister}>Daftar</button>
+              <Link to="/login" className="underline"><i className="fa fa-arrow-left"></i> Masuk</Link>
             </div>
           </div>
         </div>
@@ -104,4 +131,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Daftar;

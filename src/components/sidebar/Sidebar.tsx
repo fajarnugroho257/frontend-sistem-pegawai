@@ -26,6 +26,7 @@ export default function Sidebar() {
     {link: "/pegawai", name:"Dashboard", logo: "fa fa-bank"}, 
     {link: "/pegawai/barcode", name:"Barcode", logo: "fa fa-barcode"},
     {link: "/pegawai/absen", name:"Absen", logo: "fa fa-camera"},
+    {link: "/pegawai/schedule-generate", name:"Jadwal", logo: "fa fa-calendar"},
   ];
   return (
     <>
