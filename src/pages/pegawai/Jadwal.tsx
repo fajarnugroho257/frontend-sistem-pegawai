@@ -43,7 +43,7 @@ const Jadwal = () => {
         const getDataGenerate = async () => {
             try {
                 const response = await getDataGeneratejadwal();
-                console.log(response);
+                // console.log(response);
                 setKaryawan(response.karyawan);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -51,9 +51,6 @@ const Jadwal = () => {
         }
         getDataGenerate();
     }, []);
-
-    console.log(karyawan);
-    
 
   return (
     <>

@@ -11,6 +11,7 @@ import Pegawai from "../pages/pegawai/Pegawai";
 import Barcode from "../pages/pegawai/Barcode";
 import Absen from "../pages/pegawai/Absen";
 import Jadwal from "../pages/pegawai/Jadwal";
+import Profil from "../pages/Profil";
 
 
 const AppRoutes = () => {
@@ -24,6 +25,7 @@ const AppRoutes = () => {
             <Route path="barcode" element={<Barcode />} />
             <Route path="absen" element={<Absen />} />
             <Route path="schedule-generate" element={<Jadwal />} />
+            <Route path="profil" element={<Profil />} />
           </Route>
         </Route>
 

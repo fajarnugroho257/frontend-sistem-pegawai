@@ -43,7 +43,7 @@ const Login = () => {
       }
       const token = response.token;
       auth?.login(token);
-      navigate("/pegawai");
+      navigate("/pegawai/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         Swal.fire({

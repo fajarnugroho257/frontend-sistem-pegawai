@@ -21,12 +21,12 @@ export default function Sidebar() {
     setSideBar(!sideBar);
   }
   const location = useLocation();
-  // console.log(location.pathname);
+  const path = location.pathname;
   const dataMenu = [
-    {link: "/pegawai", name:"Dashboard", logo: "fa fa-bank"}, 
-    {link: "/pegawai/barcode", name:"Barcode", logo: "fa fa-barcode"},
-    {link: "/pegawai/absen", name:"Absen", logo: "fa fa-camera"},
-    {link: "/pegawai/schedule-generate", name:"Jadwal", logo: "fa fa-calendar"},
+    {link: "/pegawai", name:"Dashboard", logo: "fa fa-bank", menus: ['/pegawai', '/pegawai/profil']}, 
+    {link: "/pegawai/barcode", name:"Barcode", logo: "fa fa-barcode", menus: ['/pegawai/barcode']},
+    {link: "/pegawai/absen", name:"Absen", logo: "fa fa-camera", menus: ["/pegawai/absen"]},
+    {link: "/pegawai/schedule-generate", name:"Jadwal", logo: "fa fa-calendar", menus: ["/pegawai/schedule-generate"]},
   ];
   return (
     <>
@@ -45,7 +45,7 @@ export default function Sidebar() {
         <div className="flex-1 overflow-y-auto scrollbar-hide">
           <ul>
             {dataMenu.map((data) => (
-            <li onClick={() => navigate(data.link)} key={data.name} className={`cursor-pointer hover:bg-gray-700 hover:text-white rounded-md m-3 ${location.pathname === data.link ? "bg-gray-700 text-white" : "text-black"}`}>
+            <li onClick={() => navigate(data.link)} key={data.name} className={`cursor-pointer hover:bg-gray-700 hover:text-white rounded-md m-3 ${data.menus?.includes(path)? "bg-gray-700 text-white" : "text-black"}`}>
               <div className="flex items-center gap-2 p-3">
                 <i className={data.logo}></i>
                 <ListItemText primary={data.name} className={`${sideBar ? "hidden md:block" : "hidden"}`} />
